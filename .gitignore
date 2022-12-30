@@ -1,0 +1,13 @@
+/Backend/Include
+/Backend/Scripts
+/Backend/share
+/Backend/Lib
+/Backend/pyvenv.cfg
+/Backend/Server/Static/Media
+/Backend/Server/Static/Previews
+/FrontEnd/skoltakesw/android
+/FrontEnd/skoltakesw/linux
+/FrontEnd/skoltakesw/macos
+/FrontEnd/skoltakesw/web
+/FrontEnd/skoltakesw/windows
+/Backend/Server/__pycache__
