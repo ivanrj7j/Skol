@@ -179,7 +179,7 @@ def getPosts():
         postData = {}
         
         postData['name'] = '@'+post['user'][:12]
-        postData['username'] = 'communityName'
+        postData['username'] = post['community']
 
 
         postData['postType'] = post['postType']
@@ -192,7 +192,7 @@ def getPosts():
             postData['media'] = post['media']
         postData['url'] = URL+"/"+post['urlEndPoint']
         postData['points'] = post['points']
-        postData['comments'] = round(post['points']*(randint(80, 530)/100))
+        postData['comments'] = post['comments']
         returnData.append(postData)
 
     
