@@ -163,6 +163,26 @@ def post():
     
     return 'Posted!'
 
+
+def getPostInfo(post):
+    postData = {}
+    
+    postData['name'] = '@'+dict(userBase.find_one({'id':post['user']}))['userID']
+    postData['username'] = post['community'] if 'community' in post else 'communityName'
+    postData['postType'] = post['postType']
+    postData['pfp'] = getFakeProfilePic()
+    postData['caption'] = post['title']
+    if post['postType'] > 1:
+        postData['media'] = post['media']
+        postData['filename'] = URL+"/static/Previews/"+post['urlEndPoint']+'.'+post['extension'] if post['extension'].lower() in ['png', 'jpg', 'jpeg'] else URL+"/static/Media/"+post['urlEndPoint']+'.'+post['extension']
+    else:
+        postData['media'] = post['media']
+    postData['url'] = URL+"/"+post['urlEndPoint']
+    postData['points'] = post['points']
+    postData['comments'] = post['comments'] if 'comments' in post else round(post['points'] * (randint(60, 240)/100))
+
+    return postData
+
 @app.route('/getPosts', methods=['POST'])
 def getPosts():
     """
@@ -176,24 +196,7 @@ def getPosts():
     posts = fetchPosts(noOfPosts)
     returnData = []
     for post in posts:
-        postData = {}
-        
-        postData['name'] = '@'+post['user'][:12]
-        postData['username'] = post['community']
-
-
-        postData['postType'] = post['postType']
-        postData['pfp'] = 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Favatarfiles.alphacoders.com%2F108%2Fthumb-108917.png&f=1&nofb=1&ipt=328954ed74700ec81593974238dcdebfa03b79c13d50a306028dc758ac5021be&ipo=images'
-        postData['caption'] = post['title']
-        if post['postType'] > 1:
-            postData['media'] = post['media']
-            postData['filename'] = URL+"/static/Previews/"+post['urlEndPoint']+'.'+post['extension'] if post['extension'].lower() in ['png', 'jpg', 'jpeg'] else URL+"/static/Media/"+post['urlEndPoint']+'.'+post['extension']
-        else:
-            postData['media'] = post['media']
-        postData['url'] = URL+"/"+post['urlEndPoint']
-        postData['points'] = post['points']
-        postData['comments'] = post['comments']
-        returnData.append(postData)
+        returnData.append(getPostInfo(post))
 
     
 
@@ -287,6 +290,36 @@ def getUserInfo(userID:str):
         return (user['name'], user['id'])
     else:
         return ('None', 'None')
+        
+def getFakeProfilePic() -> str:
+    images = [
+        'https://i.pinimg.com/474x/97/d5/75/97d575eac5d68b4bd951882510419346.jpg', 
+        'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fyt3.ggpht.com%2Fa%2FAATXAJwH6CVrZNKmdfRY1LU2LG1FA9KtYLG8KR4p%3Ds900-c-k-c0xffffffff-no-rj-mo&f=1&nofb=1&ipt=cc894b6537f0c6d80604287b9e9eb645f7add64089799df2dd1d15d2907bd0c9&ipo=images', 
+        'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.pinimg.com%2Foriginals%2Fa4%2Fd6%2Fc1%2Fa4d6c151914c44964d6bb9bb879d04e7.jpg&f=1&nofb=1&ipt=d5dc6b24cfd969cf1c46fbff64bef54c7d7cc25bb31461445888dba9d4764b99&ipo=images', 
+        'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Favatarfiles.alphacoders.com%2F195%2F195667.png&f=1&nofb=1&ipt=0dc04ab5f5f8cec4a68a6ff7af7bc3e149e67e115620598856ede91048045ef5&ipo=images',
+        'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fyt3.ggpht.com%2Fa%2FAATXAJwILUMlbAtNBm-ekwDt9xQPsq_sQ79kBiODcw%3Ds900-c-k-c0xffffffff-no-rj-mo&f=1&nofb=1&ipt=93e20d8974c294fdf571893a261158f3e1d81b5d225274b1aba8f78614b21d0e&ipo=images']
+    return images[randint(0, len(images)-1)]
+
+@app.route('/getUserInfo', methods=['GET'])
+def fetchPublicUserData():
+    userID = request.args.get('userID').replace('@','')
+    user = dict(userBase.find_one({'userID':userID}))
+    if user and 'username' in user and 'id' in user and 'userID' in user:
+        userPFP = userData[user['id']].find({'type':'pfp'})
+        userProfilePic = dict(userPFP)['pfp'] if userPFP and 'pfp' in dict(userPFP) else getFakeProfilePic()
+        return json.dumps({'name':user['username'], 'id':user['id'], 'username':user['userID'], 'posts':[post['post'] for post in list(userData[user['id']].find({'type':'post'}))], 'imageURL': userProfilePic})
+    else:
+        return json.dumps({'name':'None', 'id':'None'})
+
+@app.route('/getPostData', methods=['POST'])
+def getPostData():
+    postsJSON = json.loads(request.form.get('posts'))
+    try:
+        data =  json.dumps([getPostInfo(dict(posts.find_one({'urlEndPoint':post}))) for post in postsJSON])
+        return data
+    except:
+        return app.response_class('Post Not Found', 404)
+    
     
 
 if __name__ == '__main__':
