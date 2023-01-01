@@ -11,8 +11,9 @@ import 'dart:async';
 
 class Home extends StatefulWidget {
   late Map<String, dynamic> userData;
+  late String dataString;
 
-  Home(String dataString) {
+  Home(this.dataString) {
     userData = json.decode(dataString);
     // getting the userdata
   }
@@ -39,7 +40,7 @@ class _HomeState extends State<Home> {
 
     setState(() {
       for (var i in data) {
-        PostCard post = BuildPostCard(json.encode(i));
+        PostCard post = BuildPostCard(json.encode(i), widget.dataString);
         widget.allPosts.add(post);
       }
     });

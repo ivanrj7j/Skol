@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:skoltakesw/customModules/shimmerwidget.dart';
+import 'package:skoltakesw/pages/ViewUser.dart';
 
 import '../customFunctions/socialPoints.dart';
 
@@ -98,7 +99,7 @@ class _PlaceholderPostState extends State<PlaceholderPost> {
 
 class PostCard extends StatefulWidget {
   late ImageProvider profilePicture, postImage;
-  late String username, community, caption, url, textContent;
+  late String username, community, caption, url, textContent, userDataString;
   late int points, comments, postType;
   late bool upvoted, downvoted;
   PostCard({
@@ -112,6 +113,7 @@ class PostCard extends StatefulWidget {
     required this.comments,
     required this.postImage,
     required this.textContent,
+    required this.userDataString,
     this.upvoted = false,
     this.downvoted = false,
     this.postType = 2,
@@ -212,13 +214,25 @@ class _PostCardState extends State<PostCard> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              widget.username,
-                              style: const TextStyle(
-                                  fontFamily: "Informal",
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 23,
-                                  color: Colors.white),
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ViewUser(
+                                              userID: widget.username,
+                                              userDataString:
+                                                  widget.userDataString,
+                                            )));
+                              },
+                              child: Text(
+                                widget.username.characters.take(12).toString(),
+                                style: const TextStyle(
+                                    fontFamily: "Informal",
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 23,
+                                    color: Colors.white),
+                              ),
                             ),
                             Text(
                               widget.community,
@@ -349,16 +363,28 @@ class _PostCardState extends State<PostCard> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              widget.username,
-                              style: const TextStyle(
-                                  fontFamily: "Informal",
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 23,
-                                  color: Colors.white),
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ViewUser(
+                                              userID: widget.username,
+                                              userDataString:
+                                                  widget.userDataString,
+                                            )));
+                              },
+                              child: Text(
+                                widget.username.characters.take(12).toString(),
+                                style: const TextStyle(
+                                    fontFamily: "Informal",
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 23,
+                                    color: Colors.white),
+                              ),
                             ),
                             Text(
-                              '@${widget.community}',
+                              widget.community,
                               style: const TextStyle(
                                   fontFamily: "Informal",
                                   fontWeight: FontWeight.bold,
@@ -483,16 +509,28 @@ class _PostCardState extends State<PostCard> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              widget.username,
-                              style: const TextStyle(
-                                  fontFamily: "Informal",
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 23,
-                                  color: Colors.white),
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ViewUser(
+                                              userID: widget.username,
+                                              userDataString:
+                                                  widget.userDataString,
+                                            )));
+                              },
+                              child: Text(
+                                widget.username.characters.take(12).toString(),
+                                style: const TextStyle(
+                                    fontFamily: "Informal",
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 23,
+                                    color: Colors.white),
+                              ),
                             ),
                             Text(
-                              '@${widget.community}',
+                              widget.community,
                               style: const TextStyle(
                                   fontFamily: "Informal",
                                   fontWeight: FontWeight.bold,
@@ -587,7 +625,7 @@ class _PostCardState extends State<PostCard> {
   }
 }
 
-PostCard BuildPostCard(String postData) {
+PostCard BuildPostCard(String postData, String userDataString) {
   Map<String, dynamic> data = json.decode(postData);
   String name = data['name'];
   String username = data['username'];
@@ -617,6 +655,7 @@ PostCard BuildPostCard(String postData) {
       postImage: postImage,
       postType: postType,
       textContent: textContent,
+      userDataString: userDataString,
     );
   } else {
     caption = data['caption'];
@@ -631,6 +670,7 @@ PostCard BuildPostCard(String postData) {
       comments: comments,
       postImage: postImage,
       textContent: textContent,
+      userDataString: userDataString,
     );
   }
 }
