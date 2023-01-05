@@ -170,7 +170,7 @@ class _ViewUserState extends State<ViewUser> {
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 32,
-                          fontFamily: "Informal",
+                          fontFamily: "Dosis",
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -197,7 +197,7 @@ class _ViewUserState extends State<ViewUser> {
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 28,
-                      fontFamily: "Informal",
+                      fontFamily: "Dosis",
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -209,7 +209,7 @@ class _ViewUserState extends State<ViewUser> {
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 24,
-                      fontFamily: "Informal",
+                      fontFamily: "Dosis",
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -218,7 +218,7 @@ class _ViewUserState extends State<ViewUser> {
                     style: TextStyle(
                       color: Color(0xFFeee5e5),
                       fontSize: 16,
-                      fontFamily: "Informal",
+                      fontFamily: "Dosis",
                       fontWeight: FontWeight.bold,
                     ),
                   ),

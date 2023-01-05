@@ -114,7 +114,7 @@ class _HomeState extends State<Home> {
                         ),
                         style: TextStyle(
                           fontSize: 44,
-                          fontFamily: "Informal",
+                          fontFamily: "Dosis",
                           fontWeight: FontWeight.bold,
                         ),
                       ),

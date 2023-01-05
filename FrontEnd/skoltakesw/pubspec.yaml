@@ -90,6 +90,11 @@ flutter:
         - asset: assets/fonts/InFormal_Style_Regular.otf
         - asset: assets/fonts/InFormal_Style_Bold.otf
           weight: 700
+    - family: Dosis
+      fonts:
+        - asset: assets/fonts/Dosis-Regular.ttf
+        - asset: assets/fonts/Dosis-Bold.ttf
+          weight: 700
   # fonts:
   #   - family: Schyler
   #     fonts:

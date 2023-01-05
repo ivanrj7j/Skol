@@ -180,6 +180,10 @@ class _PostCardState extends State<PostCard> {
           color: const Color(0xFF2fa7fb));
     }
 
+    void onTapFunction() {
+      print("hi");
+    }
+
     Widget imagePost = Padding(
       padding: const EdgeInsets.fromLTRB(7, 20, 7, 2),
       child: Container(
@@ -228,7 +232,7 @@ class _PostCardState extends State<PostCard> {
                               child: Text(
                                 widget.username.characters.take(12).toString(),
                                 style: const TextStyle(
-                                    fontFamily: "Informal",
+                                    fontFamily: "Dosis",
                                     fontWeight: FontWeight.bold,
                                     fontSize: 23,
                                     color: Colors.white),
@@ -237,7 +241,7 @@ class _PostCardState extends State<PostCard> {
                             Text(
                               widget.community,
                               style: const TextStyle(
-                                  fontFamily: "Informal",
+                                  fontFamily: "Dosis",
                                   fontWeight: FontWeight.bold,
                                   fontSize: 12,
                                   color: Colors.white),
@@ -269,6 +273,7 @@ class _PostCardState extends State<PostCard> {
                 borderRadius: BorderRadius.circular(20),
                 child: Image(
                   image: widget.postImage,
+                  width: double.infinity,
                   loadingBuilder: (BuildContext context, Widget child,
                       ImageChunkEvent? loadingProgress) {
                     if (loadingProgress == null) return child;
@@ -292,7 +297,7 @@ class _PostCardState extends State<PostCard> {
                         Text(
                           convertToString(widget.points),
                           style: const TextStyle(
-                              color: Colors.white, fontFamily: "Informal"),
+                              color: Colors.white, fontFamily: "Dosis"),
                         ),
                         downvoteButton,
                       ],
@@ -309,7 +314,7 @@ class _PostCardState extends State<PostCard> {
                         convertToString(widget.comments),
                         style: const TextStyle(
                           color: Color(0xFFffffff),
-                          fontFamily: "Informal",
+                          fontFamily: "Dosis",
                         ),
                       ),
                     ),
@@ -317,7 +322,7 @@ class _PostCardState extends State<PostCard> {
                       "Share!",
                       style: TextStyle(
                         color: Color(0xFFf0d070),
-                        fontFamily: "Informal",
+                        fontFamily: "Dosis",
                       ),
                     )
                   ],
@@ -377,7 +382,7 @@ class _PostCardState extends State<PostCard> {
                               child: Text(
                                 widget.username.characters.take(12).toString(),
                                 style: const TextStyle(
-                                    fontFamily: "Informal",
+                                    fontFamily: "Dosis",
                                     fontWeight: FontWeight.bold,
                                     fontSize: 23,
                                     color: Colors.white),
@@ -386,7 +391,7 @@ class _PostCardState extends State<PostCard> {
                             Text(
                               widget.community,
                               style: const TextStyle(
-                                  fontFamily: "Informal",
+                                  fontFamily: "Dosis",
                                   fontWeight: FontWeight.bold,
                                   fontSize: 12,
                                   color: Colors.white),
@@ -438,7 +443,7 @@ class _PostCardState extends State<PostCard> {
                         Text(
                           convertToString(widget.points),
                           style: const TextStyle(
-                              color: Colors.white, fontFamily: "Informal"),
+                              color: Colors.white, fontFamily: "Dosis"),
                         ),
                         downvoteButton,
                       ],
@@ -455,7 +460,7 @@ class _PostCardState extends State<PostCard> {
                         convertToString(widget.comments),
                         style: const TextStyle(
                           color: Color(0xFFffffff),
-                          fontFamily: "Informal",
+                          fontFamily: "Dosis",
                         ),
                       ),
                     ),
@@ -463,7 +468,7 @@ class _PostCardState extends State<PostCard> {
                       "Share!",
                       style: TextStyle(
                         color: Color(0xFFf0d070),
-                        fontFamily: "Informal",
+                        fontFamily: "Dosis",
                       ),
                     )
                   ],
@@ -523,7 +528,7 @@ class _PostCardState extends State<PostCard> {
                               child: Text(
                                 widget.username.characters.take(12).toString(),
                                 style: const TextStyle(
-                                    fontFamily: "Informal",
+                                    fontFamily: "Dosis",
                                     fontWeight: FontWeight.bold,
                                     fontSize: 23,
                                     color: Colors.white),
@@ -532,7 +537,7 @@ class _PostCardState extends State<PostCard> {
                             Text(
                               widget.community,
                               style: const TextStyle(
-                                  fontFamily: "Informal",
+                                  fontFamily: "Dosis",
                                   fontWeight: FontWeight.bold,
                                   fontSize: 12,
                                   color: Colors.white),
@@ -575,7 +580,7 @@ class _PostCardState extends State<PostCard> {
                         Text(
                           convertToString(widget.points),
                           style: const TextStyle(
-                              color: Colors.white, fontFamily: "Informal"),
+                              color: Colors.white, fontFamily: "Dosis"),
                         ),
                         downvoteButton,
                       ],
@@ -592,7 +597,7 @@ class _PostCardState extends State<PostCard> {
                         convertToString(widget.comments),
                         style: const TextStyle(
                           color: Color(0xFFffffff),
-                          fontFamily: "Informal",
+                          fontFamily: "Dosis",
                         ),
                       ),
                     ),
@@ -600,7 +605,7 @@ class _PostCardState extends State<PostCard> {
                       "Share!",
                       style: TextStyle(
                         color: Color(0xFFf0d070),
-                        fontFamily: "Informal",
+                        fontFamily: "Dosis",
                       ),
                     )
                   ],
@@ -611,14 +616,15 @@ class _PostCardState extends State<PostCard> {
         ),
       ),
     );
+
     if (widget.postType == 1) {
       if (widget.textContent != "") {
-        return textPost;
+        return InkWell(onTap: onTapFunction, child: textPost);
       } else {
-        return titlePost;
+        return InkWell(onTap: onTapFunction, child: titlePost);
       }
     } else if (widget.postType == 2) {
-      return imagePost;
+      return InkWell(onTap: onTapFunction, child: imagePost);
     } else {
       return Container();
     }
