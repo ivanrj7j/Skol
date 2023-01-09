@@ -124,507 +124,524 @@ class PostCard extends StatefulWidget {
 }
 
 class _PostCardState extends State<PostCard> {
-  @override
-  Widget build(BuildContext context) {
-    void upvote() {
-      setState(() {
-        widget.upvoted = !widget.upvoted;
-        if (widget.upvoted) {
-          widget.points += 1;
-        } else {
-          widget.points -= 1;
-        }
-        if (widget.upvoted && widget.downvoted) {
-          widget.downvoted = false;
-          widget.points += 1;
-        }
-      });
-    }
+  void upvote() {
+    setState(() {
+      widget.upvoted = !widget.upvoted;
+      if (widget.upvoted) {
+        widget.points += 1;
+      } else {
+        widget.points -= 1;
+      }
+      if (widget.upvoted && widget.downvoted) {
+        widget.downvoted = false;
+        widget.points += 1;
+      }
+    });
+  }
+  // a method to upvote the post
 
-    void downvote() {
-      setState(() {
-        widget.downvoted = !widget.downvoted;
-        if (widget.downvoted) {
-          widget.points -= 1;
-        } else {
-          widget.points += 1;
-        }
-        if (widget.upvoted && widget.downvoted) {
-          widget.upvoted = false;
-          widget.points -= 1;
-        }
-      });
-    }
+  void downvote() {
+    setState(() {
+      widget.downvoted = !widget.downvoted;
+      if (widget.downvoted) {
+        widget.points -= 1;
+      } else {
+        widget.points += 1;
+      }
+      if (widget.upvoted && widget.downvoted) {
+        widget.upvoted = false;
+        widget.points -= 1;
+      }
+    });
+  }
+  // a method to downvote the post
 
+  Widget createImagePost(Widget upvoteButton, Widget downvoteButton) {
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xFF211f1f),
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0xFF0d0c0c),
+            blurRadius: 24,
+            spreadRadius: 7,
+          )
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(23),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    CircleAvatar(
+                      backgroundImage: widget.profilePicture,
+                      radius: 27,
+                      backgroundColor: const Color(0xFFfedc76),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(3.5),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ViewUser(
+                                            userID: widget.username,
+                                            userDataString:
+                                                widget.userDataString,
+                                          )));
+                            },
+                            child: Text(
+                              widget.username.characters.take(12).toString(),
+                              style: const TextStyle(
+                                  fontFamily: "Dosis",
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 23,
+                                  color: Colors.white),
+                            ),
+                          ),
+                          Text(
+                            widget.community,
+                            style: const TextStyle(
+                                fontFamily: "Dosis",
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                                color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+                IconButton(
+                  onPressed: () => {},
+                  icon: const Icon(Icons.more_vert_sharp),
+                  color: const Color(0xFFfedc76),
+                  iconSize: 29,
+                )
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+              widget.caption,
+              style: const TextStyle(color: Colors.white),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Image(
+                image: widget.postImage,
+                width: double.infinity,
+                loadingBuilder: (BuildContext context, Widget child,
+                    ImageChunkEvent? loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return ShimmerWidget.rectangle(
+                      width: double.infinity, height: 200);
+                },
+              ),
+            ),
+            const SizedBox(
+              height: 6,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 23),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      upvoteButton,
+                      Text(
+                        convertToString(widget.points),
+                        style: const TextStyle(
+                            color: Colors.white, fontFamily: "Dosis"),
+                      ),
+                      downvoteButton,
+                    ],
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                          width: 2,
+                          style: BorderStyle.solid,
+                          color: const Color(0xFF9d9999)),
+                      borderRadius: BorderRadius.circular(3),
+                    ),
+                    child: Text(
+                      convertToString(widget.comments),
+                      style: const TextStyle(
+                        color: Color(0xFFffffff),
+                        fontFamily: "Dosis",
+                      ),
+                    ),
+                  ),
+                  const Text(
+                    "Share!",
+                    style: TextStyle(
+                      color: Color(0xFFf0d070),
+                      fontFamily: "Dosis",
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+  // creates a postcard with image
+
+  Widget createTextPost(Widget upvoteButton, Widget downvoteButton) {
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xFF211f1f),
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0xFF0d0c0c),
+            blurRadius: 24,
+            spreadRadius: 7,
+          )
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(23),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    CircleAvatar(
+                      backgroundImage: widget.profilePicture,
+                      radius: 27,
+                      backgroundColor: const Color(0xFFfedc76),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(3.5),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ViewUser(
+                                            userID: widget.username,
+                                            userDataString:
+                                                widget.userDataString,
+                                          )));
+                            },
+                            child: Text(
+                              widget.username.characters.take(12).toString(),
+                              style: const TextStyle(
+                                  fontFamily: "Dosis",
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 23,
+                                  color: Colors.white),
+                            ),
+                          ),
+                          Text(
+                            widget.community,
+                            style: const TextStyle(
+                                fontFamily: "Dosis",
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                                color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+                IconButton(
+                  onPressed: () => {},
+                  icon: const Icon(Icons.more_vert_sharp),
+                  color: const Color(0xFFfedc76),
+                  iconSize: 29,
+                )
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+              widget.caption,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 26,
+              ),
+            ),
+            const SizedBox(
+              height: 4,
+            ),
+            Text(
+              widget.textContent,
+              style: const TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 23),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      upvoteButton,
+                      Text(
+                        convertToString(widget.points),
+                        style: const TextStyle(
+                            color: Colors.white, fontFamily: "Dosis"),
+                      ),
+                      downvoteButton,
+                    ],
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                          width: 2,
+                          style: BorderStyle.solid,
+                          color: const Color(0xFF9d9999)),
+                      borderRadius: BorderRadius.circular(3),
+                    ),
+                    child: Text(
+                      convertToString(widget.comments),
+                      style: const TextStyle(
+                        color: Color(0xFFffffff),
+                        fontFamily: "Dosis",
+                      ),
+                    ),
+                  ),
+                  const Text(
+                    "Share!",
+                    style: TextStyle(
+                      color: Color(0xFFf0d070),
+                      fontFamily: "Dosis",
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+  // creates a postcard with text and title
+
+  Widget createTitlePost(Widget upvoteButton, Widget downvoteButton) {
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xFF211f1f),
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0xFF0d0c0c),
+            blurRadius: 24,
+            spreadRadius: 7,
+          )
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(23),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    CircleAvatar(
+                      backgroundImage: widget.profilePicture,
+                      radius: 27,
+                      backgroundColor: const Color(0xFFfedc76),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(3.5),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ViewUser(
+                                            userID: widget.username,
+                                            userDataString:
+                                                widget.userDataString,
+                                          )));
+                            },
+                            child: Text(
+                              widget.username.characters.take(12).toString(),
+                              style: const TextStyle(
+                                  fontFamily: "Dosis",
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 23,
+                                  color: Colors.white),
+                            ),
+                          ),
+                          Text(
+                            widget.community,
+                            style: const TextStyle(
+                                fontFamily: "Dosis",
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                                color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+                IconButton(
+                  onPressed: () => {},
+                  icon: const Icon(Icons.more_vert_sharp),
+                  color: const Color(0xFFfedc76),
+                  iconSize: 29,
+                )
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+              widget.caption,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 26,
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 23),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      upvoteButton,
+                      Text(
+                        convertToString(widget.points),
+                        style: const TextStyle(
+                            color: Colors.white, fontFamily: "Dosis"),
+                      ),
+                      downvoteButton,
+                    ],
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                          width: 2,
+                          style: BorderStyle.solid,
+                          color: const Color(0xFF9d9999)),
+                      borderRadius: BorderRadius.circular(3),
+                    ),
+                    child: Text(
+                      convertToString(widget.comments),
+                      style: const TextStyle(
+                        color: Color(0xFFffffff),
+                        fontFamily: "Dosis",
+                      ),
+                    ),
+                  ),
+                  const Text(
+                    "Share!",
+                    style: TextStyle(
+                      color: Color(0xFFf0d070),
+                      fontFamily: "Dosis",
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+  // creates a postcard with only title
+
+  List<Widget> voteButton() {
     Widget upvoteButton = IconButton(
-        onPressed: upvote,
-        icon: const Icon(CupertinoIcons.arrowtriangle_up_fill),
-        color: const Color(0xFF9d9999));
+      onPressed: upvote,
+      icon: const Icon(CupertinoIcons.arrowtriangle_up_fill),
+      color:
+          !widget.upvoted ? const Color(0xFF9d9999) : const Color(0xFFffc516),
+    );
 
     Widget downvoteButton = IconButton(
-        onPressed: downvote,
-        icon: const Icon(CupertinoIcons.arrowtriangle_down_fill),
-        color: const Color(0xFF9d9999));
+      onPressed: downvote,
+      icon: const Icon(CupertinoIcons.arrowtriangle_down_fill),
+      color:
+          !widget.downvoted ? const Color(0xFF9d9999) : const Color(0xFF2fa7fb),
+    );
+    return [upvoteButton, downvoteButton];
+  }
 
-    if (widget.upvoted) {
-      upvoteButton = IconButton(
-          onPressed: upvote,
-          icon: const Icon(CupertinoIcons.arrowtriangle_up_fill),
-          color: const Color(0xFFffc516));
-    }
-
-    if (widget.downvoted) {
-      downvoteButton = IconButton(
-          onPressed: downvote,
-          icon: const Icon(CupertinoIcons.arrowtriangle_down_fill),
-          color: const Color(0xFF2fa7fb));
-    }
+  @override
+  Widget build(BuildContext context) {
+    List<Widget> voteButtons = voteButton();
+    // implementing upvote button
 
     void onTapFunction() {
       print("hi");
     }
 
-    Widget imagePost = Padding(
-      padding: const EdgeInsets.fromLTRB(7, 20, 7, 2),
-      child: Container(
-        decoration: BoxDecoration(
-          color: const Color(0xFF211f1f),
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: const [
-            BoxShadow(
-              color: Color(0xFF0d0c0c),
-              blurRadius: 24,
-              spreadRadius: 7,
-            )
-          ],
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(23),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        backgroundImage: widget.profilePicture,
-                        radius: 27,
-                        backgroundColor: const Color(0xFFfedc76),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(3.5),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => ViewUser(
-                                              userID: widget.username,
-                                              userDataString:
-                                                  widget.userDataString,
-                                            )));
-                              },
-                              child: Text(
-                                widget.username.characters.take(12).toString(),
-                                style: const TextStyle(
-                                    fontFamily: "Dosis",
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 23,
-                                    color: Colors.white),
-                              ),
-                            ),
-                            Text(
-                              widget.community,
-                              style: const TextStyle(
-                                  fontFamily: "Dosis",
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 12,
-                                  color: Colors.white),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                  IconButton(
-                    onPressed: () => {},
-                    icon: const Icon(Icons.more_vert_sharp),
-                    color: const Color(0xFFfedc76),
-                    iconSize: 29,
-                  )
-                ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Text(
-                widget.caption,
-                style: const TextStyle(color: Colors.white),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Image(
-                  image: widget.postImage,
-                  width: double.infinity,
-                  loadingBuilder: (BuildContext context, Widget child,
-                      ImageChunkEvent? loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return ShimmerWidget.rectangle(
-                        width: double.infinity, height: 200);
-                  },
-                ),
-              ),
-              const SizedBox(
-                height: 6,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 23),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        upvoteButton,
-                        Text(
-                          convertToString(widget.points),
-                          style: const TextStyle(
-                              color: Colors.white, fontFamily: "Dosis"),
-                        ),
-                        downvoteButton,
-                      ],
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            width: 2,
-                            style: BorderStyle.solid,
-                            color: const Color(0xFF9d9999)),
-                        borderRadius: BorderRadius.circular(3),
-                      ),
-                      child: Text(
-                        convertToString(widget.comments),
-                        style: const TextStyle(
-                          color: Color(0xFFffffff),
-                          fontFamily: "Dosis",
-                        ),
-                      ),
-                    ),
-                    const Text(
-                      "Share!",
-                      style: TextStyle(
-                        color: Color(0xFFf0d070),
-                        fontFamily: "Dosis",
-                      ),
-                    )
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-
-    Widget textPost = Padding(
-      padding: const EdgeInsets.fromLTRB(7, 20, 7, 2),
-      child: Container(
-        decoration: BoxDecoration(
-          color: const Color(0xFF211f1f),
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: const [
-            BoxShadow(
-              color: Color(0xFF0d0c0c),
-              blurRadius: 24,
-              spreadRadius: 7,
-            )
-          ],
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(23),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        backgroundImage: widget.profilePicture,
-                        radius: 27,
-                        backgroundColor: const Color(0xFFfedc76),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(3.5),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => ViewUser(
-                                              userID: widget.username,
-                                              userDataString:
-                                                  widget.userDataString,
-                                            )));
-                              },
-                              child: Text(
-                                widget.username.characters.take(12).toString(),
-                                style: const TextStyle(
-                                    fontFamily: "Dosis",
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 23,
-                                    color: Colors.white),
-                              ),
-                            ),
-                            Text(
-                              widget.community,
-                              style: const TextStyle(
-                                  fontFamily: "Dosis",
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 12,
-                                  color: Colors.white),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                  IconButton(
-                    onPressed: () => {},
-                    icon: const Icon(Icons.more_vert_sharp),
-                    color: const Color(0xFFfedc76),
-                    iconSize: 29,
-                  )
-                ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Text(
-                widget.caption,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 26,
-                ),
-              ),
-              const SizedBox(
-                height: 4,
-              ),
-              Text(
-                widget.textContent,
-                style: const TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 23),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        upvoteButton,
-                        Text(
-                          convertToString(widget.points),
-                          style: const TextStyle(
-                              color: Colors.white, fontFamily: "Dosis"),
-                        ),
-                        downvoteButton,
-                      ],
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            width: 2,
-                            style: BorderStyle.solid,
-                            color: const Color(0xFF9d9999)),
-                        borderRadius: BorderRadius.circular(3),
-                      ),
-                      child: Text(
-                        convertToString(widget.comments),
-                        style: const TextStyle(
-                          color: Color(0xFFffffff),
-                          fontFamily: "Dosis",
-                        ),
-                      ),
-                    ),
-                    const Text(
-                      "Share!",
-                      style: TextStyle(
-                        color: Color(0xFFf0d070),
-                        fontFamily: "Dosis",
-                      ),
-                    )
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-
-    Widget titlePost = Padding(
-      padding: const EdgeInsets.fromLTRB(7, 20, 7, 2),
-      child: Container(
-        decoration: BoxDecoration(
-          color: const Color(0xFF211f1f),
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: const [
-            BoxShadow(
-              color: Color(0xFF0d0c0c),
-              blurRadius: 24,
-              spreadRadius: 7,
-            )
-          ],
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(23),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        backgroundImage: widget.profilePicture,
-                        radius: 27,
-                        backgroundColor: const Color(0xFFfedc76),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(3.5),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => ViewUser(
-                                              userID: widget.username,
-                                              userDataString:
-                                                  widget.userDataString,
-                                            )));
-                              },
-                              child: Text(
-                                widget.username.characters.take(12).toString(),
-                                style: const TextStyle(
-                                    fontFamily: "Dosis",
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 23,
-                                    color: Colors.white),
-                              ),
-                            ),
-                            Text(
-                              widget.community,
-                              style: const TextStyle(
-                                  fontFamily: "Dosis",
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 12,
-                                  color: Colors.white),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                  IconButton(
-                    onPressed: () => {},
-                    icon: const Icon(Icons.more_vert_sharp),
-                    color: const Color(0xFFfedc76),
-                    iconSize: 29,
-                  )
-                ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Text(
-                widget.caption,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 26,
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 23),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        upvoteButton,
-                        Text(
-                          convertToString(widget.points),
-                          style: const TextStyle(
-                              color: Colors.white, fontFamily: "Dosis"),
-                        ),
-                        downvoteButton,
-                      ],
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            width: 2,
-                            style: BorderStyle.solid,
-                            color: const Color(0xFF9d9999)),
-                        borderRadius: BorderRadius.circular(3),
-                      ),
-                      child: Text(
-                        convertToString(widget.comments),
-                        style: const TextStyle(
-                          color: Color(0xFFffffff),
-                          fontFamily: "Dosis",
-                        ),
-                      ),
-                    ),
-                    const Text(
-                      "Share!",
-                      style: TextStyle(
-                        color: Color(0xFFf0d070),
-                        fontFamily: "Dosis",
-                      ),
-                    )
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
+    Widget buildPostCard(Widget post) {
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(7, 20, 7, 2),
+        child: post,
+      );
+    }
 
     if (widget.postType == 1) {
       if (widget.textContent != "") {
-        return InkWell(onTap: onTapFunction, child: textPost);
+        return InkWell(
+            onTap: onTapFunction,
+            child:
+                buildPostCard(createTextPost(voteButtons[0], voteButtons[1])));
+        // textpost
       } else {
-        return InkWell(onTap: onTapFunction, child: titlePost);
+        return InkWell(
+            onTap: onTapFunction,
+            child:
+                buildPostCard(createTitlePost(voteButtons[0], voteButtons[1])));
+        // title only post
       }
     } else if (widget.postType == 2) {
-      return InkWell(onTap: onTapFunction, child: imagePost);
+      return InkWell(
+          onTap: onTapFunction,
+          child:
+              buildPostCard(createImagePost(voteButtons[0], voteButtons[1])));
+      // post with image
     } else {
       return Container();
     }

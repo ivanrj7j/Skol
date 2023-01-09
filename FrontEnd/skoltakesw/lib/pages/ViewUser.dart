@@ -48,7 +48,7 @@ class _ViewUserState extends State<ViewUser> {
       PostCardList.add(
           BuildPostCard(json.encode(element), widget.userDataString));
     });
-    print(PostCardList);
+
     setState(() {
       widget.posts = PostCardList;
     });
