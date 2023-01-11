@@ -295,8 +295,7 @@ def getFakeProfilePic() -> str:
     images = [
         'https://i.pinimg.com/474x/97/d5/75/97d575eac5d68b4bd951882510419346.jpg', 
         'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fyt3.ggpht.com%2Fa%2FAATXAJwH6CVrZNKmdfRY1LU2LG1FA9KtYLG8KR4p%3Ds900-c-k-c0xffffffff-no-rj-mo&f=1&nofb=1&ipt=cc894b6537f0c6d80604287b9e9eb645f7add64089799df2dd1d15d2907bd0c9&ipo=images', 
-        'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.pinimg.com%2Foriginals%2Fa4%2Fd6%2Fc1%2Fa4d6c151914c44964d6bb9bb879d04e7.jpg&f=1&nofb=1&ipt=d5dc6b24cfd969cf1c46fbff64bef54c7d7cc25bb31461445888dba9d4764b99&ipo=images', 
-        'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Favatarfiles.alphacoders.com%2F195%2F195667.png&f=1&nofb=1&ipt=0dc04ab5f5f8cec4a68a6ff7af7bc3e149e67e115620598856ede91048045ef5&ipo=images',
+        'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.pinimg.com%2Foriginals%2Fa4%2Fd6%2Fc1%2Fa4d6c151914c44964d6bb9bb879d04e7.jpg&f=1&nofb=1&ipt=d5dc6b24cfd969cf1c46fbff64bef54c7d7cc25bb31461445888dba9d4764b99&ipo=images',
         'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fyt3.ggpht.com%2Fa%2FAATXAJwILUMlbAtNBm-ekwDt9xQPsq_sQ79kBiODcw%3Ds900-c-k-c0xffffffff-no-rj-mo&f=1&nofb=1&ipt=93e20d8974c294fdf571893a261158f3e1d81b5d225274b1aba8f78614b21d0e&ipo=images']
     return images[randint(0, len(images)-1)]
 
@@ -319,6 +318,9 @@ def getPostData():
         return data
     except:
         return app.response_class('Post Not Found', 404)
+
+
+
     
     
 

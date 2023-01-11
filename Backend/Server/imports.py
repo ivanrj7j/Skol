@@ -37,6 +37,9 @@ from PIL import Image
 
 import asyncio
 
+from SimilarPosts import RecommendPosts
+from SimilarPosts.similarity import Similarity
+
 
 
 mongo = MongoClient("mongodb://localhost:27017")
